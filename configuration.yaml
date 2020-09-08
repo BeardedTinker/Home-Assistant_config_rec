@@ -1,0 +1,382 @@
+homeassistant:
+  name: BeardedHASSIO
+  latitude: 45.81444 
+  longitude: 15.97798
+  elevation: 140
+  unit_system: metric
+  time_zone: Europe/Zagreb
+  packages: !include_dir_named integrations
+
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+logbook: 
+
+logger:
+  default: warning
+
+
+recorder:
+  purge_keep_days: 3
+
+
+discovery:
+
+ssdp:
+
+zeroconf:
+
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+
+binary_sensor: !include binary_sensor.yaml
+scene: !include scenes.yaml
+switch: !include switch.yaml
+#device_tracker: !include device_tracker.yaml
+
+# InfluxDB - not installed!!!
+#influxdb:
+#  host: !secret influxdb_ip
+
+mqtt:
+  broker: !secret mqtt_url
+  port: !secret mqtt_port
+  client_id: home-assistant
+  discovery: true
+  discovery_prefix: homeassistant
+
+fastdotcom:
+  scan_interval:
+    minutes: 30
+
+tado:
+  username: !secret tado_user
+  password: !secret tado_pass
+
+device_tracker:
+  - platform: tado
+    username: !secret tado_user
+    password: !secret tado_pass
+# Tile tracker
+  - platform: tile
+    username: !secret tile_user
+    password: !secret tile_pass
+  - platform: ping
+    hosts:
+      hostone: 192.168.1.110
+      hosttwo: 192.168.1.123
+
+octoprint:
+  host: !secret octo_ip
+  api_key: !secret octo_api
+  name: Ender3
+  bed: true
+  number_of_tools: 1
+
+camera:
+  - platform: mjpeg
+    name: OctoPi
+    still_image_url: http://192.168.1.100/webcam/?action=snapshot
+    mjpeg_url: http://192.168.1.100/webcam/?action=stream
+# TEST 5010
+  - platform: mjpeg
+    name: Test Camera
+    still_image_url: http://192.168.1.130/image/jpeg.cgi
+    mjpeg_url: http://192.168.1.130/video/mjpg.cgi
+    username: ha5010
+    password: 0105ah
+    authentication: basic
+# MotionEye
+  - platform: mjpeg
+    name: Test camera 1
+    still_image_url: http://192.168.1.201:8765/picture/1/current/?_username=admin&_signature=b77d0fe91da5c6e4d51da5e738c9e77934ffcb8b
+    mjpeg_url: http://192.168.1.201:8081 
+    username: !secret motion_user
+    password: !secret motion_pass
+# Image push MotionEye
+  - platform: push
+    name: Push Camera
+#    buffer: 3
+#    timeout: 5
+    webhook_id: webtestcamera
+  - platform: local_file
+    name: cam_1_image
+    file_path: /config/recordings/cam1face.jpg
+  
+  - platform: local_file
+    name: cam_1_alt
+    file_path: recordings/cam1face.jpg
+
+
+ffmpeg:
+
+stream:
+    
+telegram_bot:
+  - platform: polling
+    api_key: !secret telegram_api
+    allowed_chat_ids:
+      - !secret telegram_chat_id1
+
+notify:
+  - platform: discord
+    name: discord
+    token: !secret discord_token
+  - platform: telegram
+    name: BeardedBot
+    chat_id: !secret telegram_chat_id1
+  - platform: group
+    name: tv_telegram
+    services:
+      - service: beardedbot 
+      - service: lg_tv
+  - platform: group
+    name: tv_telegram_discord
+    services:
+      - service: beardedbot 
+      - service: lg_tv
+      - service: discord
+
+
+
+# 0.104 change
+media_player:
+#  - platform: webostv
+#    host: 192.168.1.124
+#    name: LG TV
+#    filename: webostv.conf
+#    timeout: 5
+#    turn_on_action:
+#      service: persistant_notification.create
+#      data:
+#        message: "Turn on action"
+#    customize:
+#      sources: 
+#        - LiveTV
+#        - SmartShare
+#        - PS4
+#        - Netflix
+#
+#  - platform: androidtv
+#    host: 192.168.1.146
+#    name: SuperTV
+#    adb_server_ip: 127.0.0.1 
+
+# Emby
+  - platform: emby
+    host: !secret emby_ip 
+    api_key: !secret emby_key
+    
+
+geo_location:
+  - platform: usgs_earthquakes_feed
+    feed_type: 'past_month_m10_earthquakes'
+    radius: 250
+
+conversation:
+
+#almond:
+#  type: local
+#  host: http://192.168.1.201:3000
+  
+# DarkSky 
+weather:
+  - platform: darksky
+    name: Dark Sky
+    api_key: !secret darksky_api
+
+#folder_watcher:
+#  - folder: /config/recordings
+#    patterns:
+#      - '*.jpg'
+
+# Facebox image processing
+image_processing: 
+  - platform: facebox
+    ip_address: !secret facebox_ip
+    port: 8080
+    source:
+      - entity_id: camera.cam_1_image
+      
+# webOS
+webostv:
+  host: 192.168.1.124
+  name: LG TV
+#  filename: webostv.conf
+#  timeout: 5
+  turn_on_action:
+    service: persistent_notification.create
+    data:
+      message: "Turn on action"
+  customize:
+# source_list: 3D Smart TV,AV1,AV2,Accessibility,Camera,Component,Device Connector,HBO GO,HDMI3,LG Content Store,LG Photo Editor,LiveTV,Netflix,Notifications,PS4,Scheduler,Screen Share,SmartShare,Streaming Box,TV Guide,User Guide,Web Browser,YouTube,
+    sources:
+      - LiveTV
+      - SmartShare
+      - Netflix
+      - PS4
+      - YouTube
+      
+# OpenUV
+openuv:
+  api_key: !secret openuv_api
+#  binary_sensors:
+#    monitored_conditions:
+#      - uv_protection_window
+#  sensors:
+#    monitored_conditions:
+#      - current_ozone_level
+#      - current_uv_index
+#      - current_uv_level
+#      - max_uv_index
+#      - safe_exposure_time_type_1
+#      - safe_exposure_time_type_2
+#      - safe_exposure_time_type_3
+#      - safe_exposure_time_type_4
+#      - safe_exposure_time_type_5
+#      - safe_exposure_time_type_6
+
+shelly:
+  discover_by_ip:
+    - '192.168.1.70'
+    - '192.168.1.71'
+    - '192.168.1.72'
+
+# Luftdaten
+luftdaten:
+  sensor_id: !secret luftdaten_id
+  show_on_map: true
+  sensors:
+    monitored_conditions:
+      - P1 
+      - P2
+      - temperature
+      - humidity
+
+alert:
+  iss_visible:
+    name: ISS is visible
+    done_message: ISS is not visible
+    entity_id: binary_sensor.iss
+    state: 'on'
+    repeat: 30
+    skip_first: false 
+    notifiers:
+      - beardedbot
+      - lg_tv
+    can_acknowledge: true
+
+# Synology
+synology_dsm:
+  host: !secret syno_host
+  port: !secret syno_port
+  ssl: false
+  username: !secret syno_user
+  password: !secret syno_pass
+
+# GDACS
+#gdacs:
+#  categories:
+#    - Drought
+#    - Earthquake
+#    - Flood
+#    - Tropical Cyclone
+#    - Tsunami
+#    - Volcano
+#  radius: 750
+#  latitude: 37.983810
+#  longitude: 23.727539
+
+# Proxmox VE
+proxmoxve:
+  - host: !secret prox_ip
+    username: !secret prox_user
+    password: !secret prox_pass
+    verify_ssl: false
+#    port: 8006
+    realm: pve
+    nodes:
+      - node: proxmox
+        vms:
+          - 201
+          - 202
+
+# Plan sensor
+sensor plant:
+  - platform: mqtt    
+    name: Plant_salt_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.salt.salt }}"
+    unit_of_measurement: 'q' 
+    icon: mdi:bottle-tonic
+  - platform: mqtt
+    name: Plant_Time_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.time.time }}"
+    icon: mdi:clock
+  - platform: mqtt
+    name: Plant_Date_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.date.date }}"
+    icon: mdi:calendar    
+  - platform: mqtt
+    name: Plant_Soil_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.soil.soil }}"
+    unit_of_measurement: '%' 
+    icon: mdi:water-percent
+  - platform: mqtt
+    name: Plant_Temp_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.temp.temp }}"
+    unit_of_measurement: 'C' 
+    icon: mdi:home-thermometer
+  - platform: mqtt
+    name: Plant_Humid_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.humid.humid }}"
+    unit_of_measurement: '%' 
+    icon: mdi:water-percent
+  - platform: mqtt
+    name: Plant_Lux_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.lux.lux }}"
+    unit_of_measurement: 'lx' 
+    icon: mdi:brightness-4
+  - platform: mqtt
+    name: Plant_Battery_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.bat.bat }}"
+    unit_of_measurement: '%' 
+    icon: mdi:battery-20
+  - platform: mqtt
+    name: Plant_Sleep_counter_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.sleep5Count.sleep5Count }}"
+    icon: mdi:sleep
+  - platform: mqtt
+    name: Plant_Boot_Count_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.bootCount.bootCount }}"
+    icon: mdi:cached
+  - platform: mqtt
+    name: Plant_FW_release_1
+    state_topic: "mqtt/plant_1"
+    value_template: "{{ value_json.rel.rel }}"
+    icon: mdi:delta
+
+
+# Disabled/moved to new location
+
+#webhook:    
+
+#system_health:
+
+#sensor: !include sensor.yaml

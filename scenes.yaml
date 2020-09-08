@@ -1,0 +1,12 @@
+- id: '1574370807233'
+  name: Night
+  entities:
+    light.fridge:
+      brightness: 130
+      state: 'on'
+    light.oven:
+      brightness: 112
+      state: 'on'
+    light.sink:
+      brightness: 123
+      state: 'on'

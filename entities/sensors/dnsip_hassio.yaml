@@ -1,0 +1,4 @@
+platform: dnsip
+hostname: home-assistant.io
+name: hassio
+resolver: 8.8.8.8

@@ -1,0 +1,3 @@
+platform: seventeentrack
+username: !secret seven_user
+password: !secret seven_pass

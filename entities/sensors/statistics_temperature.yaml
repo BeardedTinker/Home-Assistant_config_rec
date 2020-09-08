@@ -1,0 +1,5 @@
+platform: statistics
+entity_id: sensor.weather_temperature
+sampling_size: 20
+precision: 2
+name: Temperature stats    

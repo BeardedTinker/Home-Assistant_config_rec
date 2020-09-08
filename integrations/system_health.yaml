@@ -1,0 +1,6 @@
+#####
+# System health enables you to track HA system status over API
+# 
+####
+
+system_health:

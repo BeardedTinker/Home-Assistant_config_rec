@@ -1,0 +1,6 @@
+platform: mold_indicator
+name: Luka room mold indicator
+indoor_temp_sensor: sensor.luka_room_temperature
+indoor_humidity_sensor: sensor.luka_room_humidity
+outdoor_temp_sensor: sensor.weather_temperature
+calibration_factor: 1.5

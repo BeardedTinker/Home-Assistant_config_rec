@@ -1,0 +1,3 @@
+platform: co2signal
+token: !secret co2signal_api
+country_code: BE

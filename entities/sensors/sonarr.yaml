@@ -1,0 +1,4 @@
+platform: sonarr
+api_key: !secret sonarr_api
+host: !secret sonarr_ip
+days: 5

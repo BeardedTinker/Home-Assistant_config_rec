@@ -1,0 +1,10 @@
+platform: radarr
+api_key: !secret radarr_api
+host: !secret radarr_ip 
+monitored_conditions: 
+  - movies
+  - upcoming
+  - commands
+  - diskspace
+  - status
+days: 7

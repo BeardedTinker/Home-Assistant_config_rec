@@ -1,0 +1,237 @@
+- id: '1576259013772'
+  alias: tado living room too long heating
+  description: ''
+  trigger:
+  - entity_id: binary_sensor.living_room_heating
+    for: 01:30:00
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: WARNING! Heating on for 90 minutes in Living room
+    service: notify.beardedbot
+- id: '1576403224771'
+  alias: Look above
+  description: ISS should be visible
+  trigger:
+  - entity_id: binary_sensor.iss
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      message: Look above! ISS is somewhere above your head!!!
+    service: notify.beardedbot
+- id: '1576916739763'
+  alias: Camera motion webhook
+  description: ''
+  trigger:
+  - platform: webhook
+    webhook_id: cam1motion
+  condition: []
+  action:
+  - data:
+      message: Cam 1 motion trigger
+    service: notify.beardedbot
+  - entity_id: image_processing.facebox_cam_1_image
+    service: image_processing.scan
+- id: '1576923587830'
+  alias: Audrey Hepburn recognized
+  description: ''
+  trigger:
+  - entity_id: sensor.facebox_detection
+    platform: state
+    to: Audrey Hepburn
+  condition: []
+  action:
+  - data:
+      message: OMG Audrey Hepburn at the door
+    service: notify.beardedbot
+- id: '01211221231'
+  alias: Aircraft in protected airspace
+  trigger:
+    platform: event
+    event_type: opensky_entry
+  action:
+    service: notify.beardedbot
+    data_template:
+      message: 'Aircraft in protected airspace: {{ trigger.event.data.callsign }} '
+- id: '1578305760672'
+  alias: Luka room mold warning
+  description: ''
+  trigger:
+  - entity_id: sensor.luka_room_mold_indicator
+    for: 00:05:00
+    platform: state
+    to: '70'
+  condition: []
+  action:
+  - data:
+      message: Luka room needs venting
+    service: notify.beardedbot
+- id: '1579536149087'
+  alias: AQI Warning
+  description: ''
+  trigger:
+  - below: '50'
+    entity_id: sensor.chinese_air_pollution_level
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Airvisual AQI is getting worse! It's above 50!
+    service: notify.beardedbot
+- id: '1579540203378'
+  alias: Update OpenUV
+  description: ''
+  trigger:
+  - minutes: '59'
+    platform: time_pattern
+  condition:
+  - after: sunrise
+    before: sunset
+    condition: sun
+  action:
+  - service: openuv.update_data
+- id: '1580754845889'
+  alias: Drzzs is streaming
+  description: ''
+  trigger:
+  - entity_id: sensor.drzzs
+    platform: state
+    to: streaming
+  condition: []
+  action:
+  - data:
+      message: DrZzs is streaming!
+    service: notify.beardedbot
+- id: '1583057126091'
+  alias: People playing Minecraft
+  description: ''
+  trigger:
+  - above: '0'
+    entity_id: sensor.minecraft_server_players_online
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Someone is Playing on Minecraft Server
+    service: notify.beardedbot
+- id: '1583057215106'
+  alias: Server respoding slowly
+  description: ''
+  trigger:
+  - above: '250'
+    entity_id: sensor.minecraft_server_latency_time
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: WARNING! Latency too high! Check server!
+    service: notify.beardedbot
+- id: '1583341044646'
+  alias: New Infection in Croatia
+  description: ''
+  trigger:
+  - entity_id: sensor.croatia_coronavirus_confirmed
+    platform: state
+  condition: []
+  action:
+  - data:
+      message: COVID-19 - Ukupno zaraženih {{ states("sensor.croatia_coronavirus_confirmed")
+        }} u HR
+    service: notify.beardedbot
+- id: '1583341122214'
+  alias: Another person recovered
+  description: ''
+  trigger:
+  - entity_id: sensor.worldwide_coronavirus_recovered
+    platform: state
+  condition: []
+  action:
+  - data:
+      message: Someone recovered from COVID-19!
+    service: notify.beardedbot
+- id: '1592841199906'
+  alias: ccs811
+  description: ''
+  trigger:
+  - above: '800'
+    entity_id: sensor.ccs811_eco2_value
+    for: 00:05
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Warning CO2 levels too high
+    service: notify.beardedbot
+- id: '1596115083257'
+  alias: Each hour
+  description: ''
+  trigger:
+  - at: '9:30'
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.luka_floor_lights_nightlight
+    service: switch.turn_on
+  - timeout: '0'
+    wait_template: '60:00'
+  - data: {}
+    entity_id: switch.luka_floor_lights_nightlight
+    service: switch.turn_off
+- id: '1596115300081'
+  alias: Start at 9:30
+  description: ''
+  trigger:
+  - at: '9:30'
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.luka_floor_lights_nightlight
+    service: switch.turn_on
+- id: '1596115361083'
+  alias: Turn off at 21:30
+  description: ''
+  trigger:
+  - at: '21:30'
+    platform: time
+  condition: []
+  action:
+  - data: {}
+    entity_id: switch.luka_floor_lights_nightlight
+    service: switch.turn_off
+- id: '1596115465639'
+  alias: Turn off for 2 minutes every 60 minutes
+  description: ''
+  trigger:
+  - minutes: '32'
+    platform: time_pattern
+  condition:
+  - after: '10:00'
+    before: '21:29'
+    condition: time
+  action:
+  - data: {}
+    entity_id: switch.luka_floor_lights_nightlight
+    service: switch.turn_off
+  - timeout: 02:00
+    wait_template: ''
+  - data: {}
+    entity_id: switch.luka_floor_lights_nightlight
+    service: switch.turn_on
+- id: '1597248309214'
+  alias: Welcome home BT
+  description: ''
+  trigger:
+  - entity_id: device_tracker.hostone
+    platform: state
+    to: home
+  condition: []
+  action:
+  - data:
+      message: Welcome home BT!
+    service: notify.beardedbot

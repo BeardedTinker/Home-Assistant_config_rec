@@ -1,0 +1,55 @@
+# MeteoAlarm
+  - platform: meteoalarm
+    country: "HR"
+    province: 'Zagreb regija'
+#    country: "FR"
+#    province: "Côte d'Or"
+
+# Workday sensor
+  - platform: workday
+    country: HR 
+    workdays: [mon, tue, wed, thu, fri]
+    excludes: [sat, sun, holiday]
+    add_holidays:
+      - '2020-12-26'
+      - '2020-12-31'
+
+# Car wash component
+#  - platform: car_wash
+#    weather: weather.home
+
+    
+# tado heating status
+  - platform: template
+    sensors:
+      living_room_heating:
+        friendly_name: "Heating in Living Room"
+        value_template: '{{ state_attr("climate.living_room","hvac_action") == "heating" }}' 
+
+# ISS
+  - platform: iss
+    show_on_map: false # default is false
+
+# Threshold
+
+  - platform: threshold
+    entity_id: sensor.living_room_temperature
+    lower: 22
+    upper: 25.5
+    name: Living room optimal temperature
+  - platform: threshold
+    entity_id: sensor.living_room_temperature
+    upper: 24.5
+    name: Living room too hot
+  - platform: threshold
+    entity_id: sensor.living_room_temperature
+    lower: 21
+    name: Living room too cold
+    
+# Ping
+
+  - platform: ping
+    host: 192.168.1.2
+    name: Router 2
+    count: 7
+    scan_interval: 30

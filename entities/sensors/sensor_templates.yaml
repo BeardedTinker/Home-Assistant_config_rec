@@ -1,0 +1,18 @@
+# Template sensors
+
+platform: template
+sensors:
+  usgs_alert:
+    friendly_name: USGS Alert
+    value_template: >-
+      {% set ns = namespace(count=0) %}
+      {% for s in states.geo_location | selectattr('attributes.source','eq','usgs_earthquakes_feed') %}
+        {% set ns.count = ns.count + 1 %}
+      {% endfor %}
+      {{ ns.count }}
+  facebox_detection:
+    friendly_name: 'Facebox detection'
+    value_template: '{{ states.image_processing.facebox_cam_1_image.attributes.faces[0]["name"].title()}}'
+  iss_next_rise:
+    friendly_name: "ISS Next Rise"
+    value_template: "{{ state_attr('binary_sensor.iss', 'next_rise') }}"
