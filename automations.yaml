@@ -235,3 +235,99 @@
   - data:
       message: Welcome home BT!
     service: notify.beardedbot
+- id: '1601373446954'
+  alias: TEST Home Assistant Update available
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  - platform: state
+    entity_id: sensor.latest_version
+  condition:
+  - condition: template
+    value_template: '{{ states("sensor.latest_version") != states("sensor.current_version")
+      and states("sensor.latest_version") != "unknown" and states("sensor.latest_version")
+      !=   states("input_text.version_latest_notified")  }}
+
+      '
+  action:
+  - service: input_text.set_value
+    data:
+      value: '{{ states("sensor.latest_version") }}'
+    entity_id: input_text.version_latest_notified
+  - service: persistent_notification.create
+    data:
+      title: Update Home Assistant
+      message: "There is an update to Home Assistant Supervised\n  * {{ states(\"\
+        sensor.current_version\") }} -> {{ states(\"sensor.latest_version\") }}\n\
+        \  Triggering Travis build...\n"
+      notification_id: update_ha
+  - service: rest_command.travis_build
+    data: {}
+  - wait_template: '{{ is_state(''sensor.beardedtinker_home_assistant_config_rec_state'',
+      ''started'') }}'
+  - service: persistent_notification.create
+    data:
+      title: Update Home Assistant
+      message: "There is an update to Home Assistant Supervised\n  * {{ states(\"\
+        sensor.current_version\") }} -> {{ states(\"sensor.latest_version\") }}\n\
+        \  Travis Build has started\n"
+      notification_id: update_ha
+  - wait_template: '{{ not is_state(''sensor.beardedtinker_home_assistant_config_rec_state'',
+      ''created'') and not is_state(''sensor.beardedtinker_home_assistant_config_rec_state'',
+      ''started'') }}'
+  - service: persistent_notification.create
+    data:
+      title: Update Home Assistant
+      message: "There is an update to Home Assistant Supervised\n  * {{ states(\"\
+        sensor.current_version\") }} -> {{ states(\"sensor.latest_version\") }}\n\
+        \  Travis Build has {{states('sensor.beardedtinker_home_assistant_config_rec_state')}}\n"
+      notification_id: update_ha
+  mode: single
+- id: '1601375003220'
+  alias: Home Assistant Update automation
+  description: ''
+  trigger:
+  - platform: homeassistant
+    event: start
+  - platform: state
+    entity_id: sensor.latest_version
+  condition:
+  - condition: template
+    value_template: '{{ states("sensor.latest_version") != states("sensor.current_version")
+      and states("sensor.latest_version") != "unknown" and states("sensor.latest_version")
+      != states("input_text.version_latest_notified") }}'
+  action:
+  - service: input_text.set_value
+    data:
+      value: '{{ states("sensor.latest_version") }}'
+    entity_id: input_text.version_latest_notified
+  - service: persistent_notification.create
+    data:
+      title: Update Home Assistant
+      message: "There is an update to Home Assistant Supervised\n  * {{ states(\"\
+        sensor.current_version\") }} -> {{ states(\"sensor.latest_version\") }}\n\
+        \  Triggering Travis build...\n"
+      notification_id: update_ha
+  - service: rest_command.travis_build
+    data: {}
+  - wait_template: '{{ is_state(''sensor.beardedtinker_home_assistant_config_rec_state'',
+      ''started'') }}'
+  - service: persistent_notification.create
+    data:
+      title: Update Home Assistant
+      message: "There is an update to Home Assistant Supervised\n  * {{ states(\"\
+        sensor.current_version\") }} -> {{ states(\"sensor.latest_version\") }}\n\
+        \  Travis Build has started\n"
+      notification_id: update_ha
+  - wait_template: '{{ not is_state(''sensor.beardedtinker_home_assistant_config_rec_state'',
+      ''created'') and not is_state(''sensor.beardedtinker_home_assistant_config_rec_state'',
+      ''started'') }}'
+  - service: persistent_notification.create
+    data:
+      title: Update Home Assistant
+      message: "There is an update to Home Assistant Supervised\n  * {{ states(\"\
+        sensor.current_version\") }} -> {{ states(\"sensor.latest_version\") }}\n\
+        \  Travis Build has {{states('sensor.beardedtinker_home_assistant_config_rec_state')}}\n"
+      notification_id: update_ha
+  mode: single

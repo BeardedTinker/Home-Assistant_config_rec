@@ -1,0 +1,7 @@
+sensor:
+  - platform: version
+    name: Current version
+    source: local
+  - platform: version
+    name: Latest version
+    source: hassio
