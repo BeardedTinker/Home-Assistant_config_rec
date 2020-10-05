@@ -5,3 +5,8 @@ sensor:
   - platform: version
     name: Latest version
     source: hassio
+  - platform: version
+    name: Beta version
+    source: hassio
+    beta: true
+    

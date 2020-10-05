@@ -331,3 +331,40 @@
         \  Travis Build has {{states('sensor.beardedtinker_home_assistant_config_rec_state')}}\n"
       notification_id: update_ha
   mode: single
+- id: '1601830956731'
+  alias: New version notification
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.latest_version
+  condition:
+  - condition: template
+    value_template: '{{ states("sensor.latest_version") != states("sensor.current_version")
+      and states("sensor.latest_version") != "unknown" }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      title: New version available
+      message: 'There is an updated to Home Assistant available. {{ states("sensor.current_version")
+        }} -> {{ states("sensor.latest_version") }}
+
+        '
+  mode: single
+- id: '1601831231025'
+  alias: New BETA version available
+  description: ''
+  trigger:
+  - platform: state
+    entity_id: sensor.beta_version
+  condition:
+  - condition: template
+    value_template: '{{ states("sensor.beta_version") != "unknown" }}'
+  action:
+  - service: persistent_notification.create
+    data:
+      title: New BETA version available
+      message: 'There is a BETA version available. {{ states("sensor.beta_version")
+        }}
+
+        '
+  mode: single
