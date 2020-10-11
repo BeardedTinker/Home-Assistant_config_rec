@@ -103,19 +103,42 @@ camera:
     username: !secret motion_user
     password: !secret motion_pass
 # Image push MotionEye
-  - platform: push
-    name: Push Camera
+#  - platform: push
+#    name: Push Camera
 #    buffer: 3
 #    timeout: 5
-    webhook_id: webtestcamera
-  - platform: local_file
-    name: cam_1_image
-    file_path: /config/recordings/cam1face.jpg
+#    webhook_id: webtestcamera
+#  - platform: local_file
+#    name: cam_1_image
+#    file_path: /config/recordings/cam1face.jpg
   
-  - platform: local_file
-    name: cam_1_alt
-    file_path: recordings/cam1face.jpg
+#  - platform: local_file
+#    name: cam_1_alt
+#    file_path: recordings/cam1face.jpg
 
+# Reolink Cameras
+  - platform: reolink_dev
+    host: !secret reolink_1_ip
+    username: !secret reolink_1_user
+    password: !secret reolink_1_pass
+    name: HACS Camera 1
+    stream: sub
+    protocol: rtmp
+    scan_interval: 10
+  - platform: reolink_dev
+    host: !secret reolink_2_ip
+    username: !secret reolink_2_user
+    password: !secret reolink_2_pass
+    name: HACS Camera 2
+    stream: sub
+    protocol: rtmp
+    scan_interval: 10
+  - platform: ffmpeg
+    name: FFmpeg Camera 1
+    input: -rtsp_transport tcp -i rtsp://admin:1q2w3e4r@192.168.1.119:554/h264Preview_01_sub
+  - platform: ffmpeg
+    name: FFmpeg Camera 2
+    input: -rtsp_transport tcp -i rtsp://admin:1q2w3e4r@192.168.1.111:554/h264Preview_01_sub
 
 ffmpeg:
 
