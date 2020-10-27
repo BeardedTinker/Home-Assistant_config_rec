@@ -42,6 +42,8 @@ switch: !include switch.yaml
 #device_tracker: !include device_tracker.yaml
 input_text: !include input_text.yaml
 rest_command: !include rest_command.yaml
+input_number: !include input_number.yaml
+input_select: !include input_select.yaml
 
 # InfluxDB - not installed!!!
 #influxdb:
@@ -96,12 +98,12 @@ camera:
     password: 0105ah
     authentication: basic
 # MotionEye
-  - platform: mjpeg
-    name: Test camera 1
-    still_image_url: http://192.168.1.201:8765/picture/1/current/?_username=admin&_signature=b77d0fe91da5c6e4d51da5e738c9e77934ffcb8b
-    mjpeg_url: http://192.168.1.201:8081 
-    username: !secret motion_user
-    password: !secret motion_pass
+#  - platform: mjpeg
+#    name: Test camera 1
+#    still_image_url: http://192.168.1.201:8765/picture/1/current/?_username=admin&_signature=b77d0fe91da5c6e4d51da5e738c9e77934ffcb8b
+#    mjpeg_url: http://192.168.1.201:8081 
+#    username: !secret motion_user
+#    password: !secret motion_pass
 # Image push MotionEye
 #  - platform: push
 #    name: Push Camera
@@ -118,14 +120,6 @@ camera:
 
 # Reolink Cameras
   - platform: reolink_dev
-    host: !secret reolink_1_ip
-    username: !secret reolink_1_user
-    password: !secret reolink_1_pass
-    name: HACS Camera 1
-    stream: sub
-    protocol: rtmp
-    scan_interval: 10
-  - platform: reolink_dev
     host: !secret reolink_2_ip
     username: !secret reolink_2_user
     password: !secret reolink_2_pass
@@ -133,12 +127,6 @@ camera:
     stream: sub
     protocol: rtmp
     scan_interval: 10
-  - platform: ffmpeg
-    name: FFmpeg Camera 1
-    input: -rtsp_transport tcp -i rtsp://admin:1q2w3e4r@192.168.1.119:554/h264Preview_01_sub
-  - platform: ffmpeg
-    name: FFmpeg Camera 2
-    input: -rtsp_transport tcp -i rtsp://admin:1q2w3e4r@192.168.1.111:554/h264Preview_01_sub
 
 ffmpeg:
 
@@ -240,14 +228,14 @@ webostv:
     service: persistent_notification.create
     data:
       message: "Turn on action"
-  customize:
-# source_list: 3D Smart TV,AV1,AV2,Accessibility,Camera,Component,Device Connector,HBO GO,HDMI3,LG Content Store,LG Photo Editor,LiveTV,Netflix,Notifications,PS4,Scheduler,Screen Share,SmartShare,Streaming Box,TV Guide,User Guide,Web Browser,YouTube,
-    sources:
-      - LiveTV
-      - SmartShare
-      - Netflix
-      - PS4
-      - YouTube
+#  customize:
+#  source_list: 3D Smart TV,AV1,AV2,Accessibility,Camera,Component,Device Connector,HBO GO,HDMI3,LG Content Store,LG Photo Editor,LiveTV,Netflix,Notifications,PS4,Scheduler,Screen Share,SmartShare,Streaming Box,TV Guide,User Guide,Web Browser,YouTube,
+#    sources:
+#      - LiveTV
+#      - SmartShare
+#      - Netflix
+#      - PS4
+#      - YouTube
       
 # OpenUV
 openuv:

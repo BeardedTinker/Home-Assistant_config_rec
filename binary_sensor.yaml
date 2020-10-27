@@ -26,13 +26,7 @@
         friendly_name: "Heating in Living Room"
         value_template: '{{ state_attr("climate.living_room","hvac_action") == "heating" }}' 
 
-# Reolink Cameras
-      motion_camera1:
-        friendly_name: HACS Camera 1 motion
-        device_class: motion
-        value_template: "{{ is_state('camera.hacs_camera_1', 'motion') }}"
-        delay_off:
-          seconds: 30
+# Reolink Camera
       motion_camera2:
         friendly_name: HACS Camera 2 motion
         device_class: motion

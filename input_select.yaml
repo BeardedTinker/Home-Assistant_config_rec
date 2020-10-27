@@ -1,0 +1,20 @@
+# Radio stations
+
+radio_station:
+  name: 'Select Radio Station'
+  options: 
+    - 'Otvoreni'
+    - '2x2'
+    - '1.FM'
+  initial: Otvoreni
+  icon: mdi:radio
+  
+radio_speaker:
+  name: 'Select Speaker'
+  options:
+    - 'Display me'
+    - 'Clock me'
+    - 'Mini me'
+    - 'Whatever me'
+  initial: 'Clock me'
+  icon: mdi:speaker-wireless

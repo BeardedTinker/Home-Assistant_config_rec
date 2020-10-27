@@ -358,7 +358,8 @@
     entity_id: sensor.beta_version
   condition:
   - condition: template
-    value_template: '{{ states("sensor.beta_version") != "unknown" }}'
+    value_template: '{{ states("sensor.beta_version") != states("sensor.current_version")
+      and states("sensor.beta_version") != "unknown" }}'
   action:
   - service: persistent_notification.create
     data:

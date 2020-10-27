@@ -1,0 +1,28 @@
+# Radio play script
+
+radio_play:
+  alias: Play Radio on Chromecast
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: >
+        {% if is_state("input_select.radio_speaker", "Display me") %} media_player.display_me
+        {% elif is_state("input_select.radio_speaker", "Mini me") %} media_player.mini_me
+        {% elif is_state("input_select.radio_speaker", "Whatever me") %} media_player.whatever_me
+        {% elif is_state("input_select.radio_speaker", "Clock me") %} media_player.clock_me
+        {% endif %}
+      volume_level: '{{ states("input_number.radio_volume") }}'
+  - service: media_player.play_media
+    data:
+      entity_id: >
+        {% if is_state("input_select.radio_speaker", "Display me") %} media_player.display_me
+        {% elif is_state("input_select.radio_speaker", "Mini me") %} media_player.mini_me
+        {% elif is_state("input_select.radio_speaker", "Whatever me") %} media_player.whatever_me
+        {% elif is_state("input_select.radio_speaker", "Clock me") %} media_player.clock_me
+        {% endif %}
+      media_content_id: >
+        {% if is_state("input_select.radio_station", "1.FM") %} https://strm112.1.fm/crock_mobile_mp3
+        {% elif is_state("input_select.radio_station", "Otvoreni") %} http://proxima.shoutca.st:8357/stream
+        {% elif is_state("input_select.radio_station", "2x2") %} http://95.104.192.220:8001/radio2x2.ogg
+        {% endif %}
+      media_content_type: 'music'
