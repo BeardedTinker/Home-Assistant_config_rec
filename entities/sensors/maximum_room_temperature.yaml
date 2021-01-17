@@ -1,0 +1,8 @@
+platform: min_max
+entity_ids:
+  - sensor.zita_room_temperature
+  - sensor.luka_room_temperature
+  - sensor.living_room_temperature
+  - sensor.living_room_temperature_2
+type: max
+name: Maximum temperature value

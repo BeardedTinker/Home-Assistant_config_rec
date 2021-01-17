@@ -369,3 +369,36 @@
 
         '
   mode: single
+- id: '1606842864634'
+  alias: Tag Blue FOB @reader is scanned
+  description: ''
+  trigger:
+  - platform: tag
+    tag_id: 3C-E5-EE-21
+  condition: []
+  action:
+  - type: toggle
+    device_id: 10af3f8fcfae83c4e44bd5310536fec5
+    entity_id: light.elgato_key_light_air_a54c
+    domain: light
+  mode: single
+- id: '1610458337102'
+  alias: Ink low
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: 
+      - sensor.hp_deskjet_3520_series_black_ink
+      - sensor.hp_deskjet_3520_series_cyan_ink
+      - sensor.hp_deskjet_3520_series_yellow_ink
+      - sensor.hp_deskjet_3520_series_magenta_ink
+    for: 00:00:05
+    below: '25'
+  condition: []
+  action:
+  - service: persistent_notification.create
+    data:
+      title: Ink low
+      message: '{{ trigger.to_state.attributes.friendly_name }} is at {{ trigger.to_state.state
+        }}%'
+  mode: single

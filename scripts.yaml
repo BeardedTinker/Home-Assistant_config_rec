@@ -26,3 +26,32 @@ radio_play:
         {% elif is_state("input_select.radio_station", "2x2") %} http://95.104.192.220:8001/radio2x2.ogg
         {% endif %}
       media_content_type: 'music'
+
+radio_play2:
+  alias: Play TuneIn
+  sequence:
+  - service: media_player.volume_set
+    data:
+      entity_id: >
+        {% if is_state("input_select.radio_speaker", "Display me") %} media_player.display_me
+        {% elif is_state("input_select.radio_speaker", "Woonkamer Nest") %} media_player.woonkamer_nest
+        {% elif is_state("input_select.radio_speaker", "Girls Slaapkamer") %} media_player.girls_slaapkamer
+        {% elif is_state("input_select.radio_speaker", "Buro Mini") %} media_player.buro_mini
+        {% endif %}
+      volume_level: '{{  states("input_number.radio_volume")  }}'
+  - service: media_player.play_media
+    data:
+      entity_id: >
+        {% if is_state("input_select.radio_speaker", "Display me") %} media_player.display_me
+        {% elif is_state("input_select.radio_speaker", "Woonkamer Nest") %} media_player.woonkamer_nest
+        {% elif is_state("input_select.radio_speaker", "Girls Slaapkamer") %} media_player.girls_slaapkamer
+        {% elif is_state("input_select.radio_speaker", "Buro Mini") %} media_player.buro_mini
+        {% endif %}
+      media_content_id: >
+        {% if is_state("input_select.radio_station", "Nostalgie Vlaanderen") %} https://21253.live.streamtheworld.com/NOSTALGIEWHATAFEELING.mp3
+        {% elif is_state("input_select.radio_station", "Nostalgie Extra") %} https://22653.live.streamtheworld.com/NOSTALGIEWAFEXTRA.mp3
+        {% elif is_state("input_select.radio_station", "Nostalgie Extra 90's") %} https://22653.live.streamtheworld.com/NOSTALGIEWAF90.mp3
+        {% elif is_state("input_select.radio_station", "HRT1") %} https://21223.live.streamtheworld.com/PROGRAM1AAC_SC
+        {% elif is_state("input_select.radio_station", "HRT2") %} https://20073.live.streamtheworld.com:3690/PROGRAM2AAC_SC
+        {% endif %}
+      media_content_type: 'music'

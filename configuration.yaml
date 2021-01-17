@@ -7,7 +7,6 @@ homeassistant:
   time_zone: Europe/Zagreb
   packages: !include_dir_named integrations
 
-
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
@@ -16,17 +15,14 @@ logbook:
 logger:
   default: warning
 
-
 recorder:
   purge_keep_days: 3
-
 
 discovery:
 
 ssdp:
 
 zeroconf:
-
 
 # Text to speech
 tts:
@@ -119,14 +115,14 @@ camera:
 #    file_path: recordings/cam1face.jpg
 
 # Reolink Cameras
-  - platform: reolink_dev
-    host: !secret reolink_2_ip
-    username: !secret reolink_2_user
-    password: !secret reolink_2_pass
-    name: HACS Camera 2
-    stream: sub
-    protocol: rtmp
-    scan_interval: 10
+#  - platform: reolink_dev
+#    host: !secret reolink_2_ip
+#    username: !secret reolink_2_user
+#    password: !secret reolink_2_pass
+#    name: HACS Camera 2
+#   stream: sub
+#    protocol: rtmp
+#    scan_interval: 10
 
 ffmpeg:
 
@@ -157,8 +153,6 @@ notify:
       - service: lg_tv
       - service: discord
 
-
-
 # 0.104 change
 media_player:
 #  - platform: webostv
@@ -186,7 +180,6 @@ media_player:
   - platform: emby
     host: !secret emby_ip 
     api_key: !secret emby_key
-    
 
 geo_location:
   - platform: usgs_earthquakes_feed
@@ -257,10 +250,13 @@ openuv:
 #      - safe_exposure_time_type_6
 
 shelly:
-  discover_by_ip:
-    - '192.168.1.70'
-    - '192.168.1.71'
-    - '192.168.1.72'
+  version: true   # add version sensor
+  sensors:
+    - all
+#  discover_by_ip:
+#    - '192.168.1.70'
+#    - '192.168.1.71'
+#    - '192.168.1.72'
 
 # Luftdaten
 luftdaten:
@@ -320,6 +316,8 @@ proxmoxve:
         vms:
           - 201
           - 202
+          - 203
+          - 204
 
 # Plan sensor
 sensor plant:
